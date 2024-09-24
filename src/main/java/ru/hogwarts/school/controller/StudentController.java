@@ -3,6 +3,7 @@ package ru.hogwarts.school.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.exceptions.CheckIDException;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
@@ -30,6 +31,9 @@ public class StudentController {
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
+        if (id < 0){
+            throw new CheckIDException();
+        }
         return ResponseEntity.ok(student);
     }
 
@@ -44,15 +48,18 @@ public class StudentController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Student> deleteStudent(@PathVariable Long id) {
+        if (id < 0){
+            throw new CheckIDException();
+        }
         service.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping()
+    @GetMapping("/age")
     public ResponseEntity<Collection<Student>> filteredByAge(@PathVariable int age) {
         if (age > 0) {
             return ResponseEntity.ok(service.getStudentByAge(age));
         }
-        return ResponseEntity.ok(Collections.emptyList());
+        return (ResponseEntity<Collection<Student>>) ResponseEntity.badRequest();
     }
 }

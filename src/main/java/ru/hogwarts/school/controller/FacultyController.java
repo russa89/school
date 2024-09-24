@@ -1,8 +1,8 @@
 package ru.hogwarts.school.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.exceptions.CheckIDException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.service.FacultyService;
 
@@ -13,7 +13,6 @@ import java.util.Collections;
 @RequestMapping(path = "/faculty")
 public class FacultyController {
 
-    @Autowired
     private final FacultyService service;
 
     public FacultyController(FacultyService service) {
@@ -31,6 +30,9 @@ public class FacultyController {
         if (faculty == null) {
             return ResponseEntity.notFound().build();
         }
+        if (id < 0){
+            throw new CheckIDException();
+        }
         return ResponseEntity.ok(faculty);
     }
 
@@ -45,12 +47,15 @@ public class FacultyController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long id) {
+        if (id < 0) {
+            throw new CheckIDException();
+        }
         service.deleteFaculty(id);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping()
-    public ResponseEntity<Collection<Faculty>> filteredByColor(@RequestParam(required = false) String color) {
+    @GetMapping("/color")
+    public ResponseEntity<Collection<Faculty>> filteredByColor(@RequestParam String color) {
         if (color != null && !color.isBlank()) {
             return ResponseEntity.ok(service.getFacultyByColor(color));
         }
