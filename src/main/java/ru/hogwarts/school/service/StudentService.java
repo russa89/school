@@ -2,6 +2,9 @@ package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import ru.hogwarts.school.exceptions.StudentListIsEmptyException;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
 
@@ -9,7 +12,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-
 public class StudentService {
 
     @Autowired
@@ -28,7 +30,7 @@ public class StudentService {
     }
 
     public Student updateStudentInfo(Student student) {
-      return studentRepository.save(student);
+        return studentRepository.save(student);
     }
 
     public void deleteStudent(Long id) {
@@ -41,5 +43,22 @@ public class StudentService {
                 .stream()
                 .filter(student -> student.getAge() == age)
                 .collect(Collectors.toList());
+    }
+
+    public Collection<Student> getStudentBetweenAge(int minAge, int maxAge) {
+        return studentRepository.findByAgeBetween(minAge, maxAge);
+    }
+
+    public Collection<Student> getAllStudents() {
+        List<Student> students = new ArrayList<>(studentRepository
+                .findAll());
+        if (students.isEmpty()) {
+            throw new StudentListIsEmptyException();
+        }
+        return students;
+    }
+
+    public Faculty findFacultyByStudent(long id) {
+        return this.getStudent(id).getFaculty();
     }
 }

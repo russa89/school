@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.exceptions.CheckIDException;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/student")
@@ -61,5 +64,21 @@ public class StudentController {
             return ResponseEntity.ok(service.getStudentByAge(age));
         }
         return (ResponseEntity<Collection<Student>>) ResponseEntity.badRequest();
+    }
+
+    @GetMapping("/filter")
+    public Collection<Student> filteredByAge(@RequestParam int minAge,
+                                             @RequestParam int maxAge) {
+        return service
+                .getAllStudents()
+                .stream()
+                .filter(student -> (student.getAge() > minAge && student.getAge() < maxAge))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}/faculty")
+    public Faculty findFacultyByStudent(@PathVariable long id){
+        return service.findFacultyByStudent(id);
+
     }
 }

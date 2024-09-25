@@ -4,10 +4,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.exceptions.CheckIDException;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/faculty")
@@ -30,7 +33,7 @@ public class FacultyController {
         if (faculty == null) {
             return ResponseEntity.notFound().build();
         }
-        if (id < 0){
+        if (id < 0) {
             throw new CheckIDException();
         }
         return ResponseEntity.ok(faculty);
@@ -60,5 +63,10 @@ public class FacultyController {
             return ResponseEntity.ok(service.getFacultyByColor(color));
         }
         return ResponseEntity.ok(Collections.emptyList());
+    }
+
+    @GetMapping("/{id}/students")
+    public ResponseEntity<Collection<Student>> findAllStudentsOfFaculty(@PathVariable long id) {
+        return findAllStudentsOfFaculty(id);
     }
 }

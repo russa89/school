@@ -1,8 +1,11 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exceptions.StudentListIsEmptyException;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
 
 import java.util.*;
@@ -19,7 +22,7 @@ public class FacultyService {
     }
 
     public Faculty createFaculty(Faculty faculty) {
-       return facultyRepository.save(faculty);
+        return facultyRepository.save(faculty);
     }
 
     public Faculty getFaculty(long id) {
@@ -41,5 +44,13 @@ public class FacultyService {
                 .stream()
                 .filter(faculty -> faculty.getColor() == color)
                 .collect(Collectors.toList());
+    }
+
+    public List<Student> findAllStudentsOfFaculty(long id) {
+        List<Student> students = this.findAllStudentsOfFaculty(id);
+        if (students == null) {
+            throw new StudentListIsEmptyException();
+        }
+        return students;
     }
 }
