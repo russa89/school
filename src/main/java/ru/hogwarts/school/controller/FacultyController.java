@@ -66,7 +66,7 @@ public class FacultyController {
     }
 
     @GetMapping("/{id}/students")
-    public ResponseEntity<Collection<Student>> findAllStudentsOfFaculty(@PathVariable long id) {
-        return findAllStudentsOfFaculty(id);
+    public Collection<Student> findAllStudentsOfFaculty(@PathVariable long id) {
+        return service.findAllStudentsOfFaculty(id);
     }
 }

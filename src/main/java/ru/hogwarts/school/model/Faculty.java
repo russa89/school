@@ -25,6 +25,9 @@ public class Faculty {
         this.color = color;
     }
 
+    public List<Student> getStudents(){
+        return students;
+    }
     public long getId() {
         return id;
     }

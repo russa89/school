@@ -59,6 +59,8 @@ public class StudentService {
     }
 
     public Faculty findFacultyByStudent(long id) {
-        return this.getStudent(id).getFaculty();
+        Student student = studentRepository.findById(id).orElseThrow(
+                StudentListIsEmptyException::new);
+        return student.getFaculty();
     }
 }

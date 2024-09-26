@@ -3,6 +3,7 @@ package ru.hogwarts.school.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exceptions.FacultyNotFoundException;
 import ru.hogwarts.school.exceptions.StudentListIsEmptyException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -47,10 +48,9 @@ public class FacultyService {
     }
 
     public List<Student> findAllStudentsOfFaculty(long id) {
-        List<Student> students = this.findAllStudentsOfFaculty(id);
-        if (students == null) {
-            throw new StudentListIsEmptyException();
-        }
-        return students;
+        Faculty faculty = facultyRepository.findById(id).orElseThrow(
+                () -> new FacultyNotFoundException());
+
+        return faculty.getStudents();
     }
 }
