@@ -46,7 +46,7 @@ public class AvatarService {
         avatarRepository.save(avatar);
     }
 
-    private Avatar findAvatar(Long studentId) {
+    public Avatar findAvatar(Long studentId) {
         return avatarRepository.findByStudentId(studentId).orElseThrow(
                 () -> new AvatarNotFoundException(studentId));
     }
