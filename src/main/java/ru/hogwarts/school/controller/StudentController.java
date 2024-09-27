@@ -29,19 +29,17 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Student> getStudent(@PathVariable long id) {
+    public ResponseEntity getStudent(@PathVariable long id) {
         Student student = service.getStudent(id);
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
-        if (id < 0){
-            throw new CheckIDException();
-        }
+
         return ResponseEntity.ok(student);
     }
 
     @PutMapping()
-    public ResponseEntity<Student> updateStudentInfo(@RequestBody Student student) {
+    public ResponseEntity updateStudentInfo(@PathVariable long id, @RequestBody Student student) {
         Student foundStudent = service.updateStudentInfo(student);
         if (foundStudent == null) {
             return ResponseEntity.notFound().build();
@@ -50,20 +48,14 @@ public class StudentController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Student> deleteStudent(@PathVariable Long id) {
-        if (id < 0){
-            throw new CheckIDException();
-        }
+    public ResponseEntity deleteStudent(@PathVariable Long id) {
         service.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/age")
-    public ResponseEntity<Collection<Student>> filteredByAge(@PathVariable int age) {
-        if (age > 0) {
-            return ResponseEntity.ok(service.getStudentByAge(age));
-        }
-        return (ResponseEntity<Collection<Student>>) ResponseEntity.badRequest();
+    public Collection<Student> filteredByAge(@RequestParam int age) {
+        return service.getStudentByAge(age);
     }
 
     @GetMapping("/filter")
@@ -77,8 +69,12 @@ public class StudentController {
     }
 
     @GetMapping("/{id}/faculty")
-    public Faculty findFacultyByStudent(@PathVariable long id){
-        return service.findFacultyByStudent(id);
-
+    public ResponseEntity findFacultyByStudent(@PathVariable Long id) {
+        Student student = service.getStudent(id);
+        if (student == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(student.getFaculty());
     }
 }
+

@@ -30,17 +30,14 @@ public class FacultyController {
     @GetMapping("{id}")
     public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
         Faculty faculty = service.getFaculty(id);
-        if (faculty == null) {
-            return ResponseEntity.notFound().build();
-        }
         if (id < 0) {
             throw new CheckIDException();
         }
         return ResponseEntity.ok(faculty);
     }
 
-    @PutMapping()
-    public ResponseEntity<Faculty> updateFacultyInfo(@RequestBody Faculty faculty) {
+    @PutMapping("{id}")
+    public ResponseEntity updateFacultyInfo(@PathVariable long id, @RequestBody Faculty faculty) {
         Faculty foundFaculty = service.updateFacultyInfo(faculty);
         if (foundFaculty == null) {
             return ResponseEntity.notFound().build();
@@ -50,23 +47,22 @@ public class FacultyController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long id) {
-        if (id < 0) {
-            throw new CheckIDException();
-        }
         service.deleteFaculty(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/color")
-    public ResponseEntity<Collection<Faculty>> filteredByColor(@RequestParam String color) {
-        if (color != null && !color.isBlank()) {
-            return ResponseEntity.ok(service.getFacultyByColor(color));
-        }
-        return ResponseEntity.ok(Collections.emptyList());
+    public Collection<Faculty> filteredByColor(@RequestParam String color) {
+        return service.getFacultyByColor(color);
     }
 
     @GetMapping("/{id}/students")
-    public Collection<Student> findAllStudentsOfFaculty(@PathVariable long id) {
-        return service.findAllStudentsOfFaculty(id);
+    public ResponseEntity findAllStudentsOfFaculty(@PathVariable long id) {
+        Faculty faculty = service.getFaculty(id);
+        if (faculty == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(service.getFaculty(id).getStudents());
     }
+
 }

@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class FacultyService {
 
     @Autowired
-    private FacultyRepository facultyRepository;
+    private final FacultyRepository facultyRepository;
 
     public FacultyService(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;
@@ -27,7 +27,8 @@ public class FacultyService {
     }
 
     public Faculty getFaculty(long id) {
-        return facultyRepository.findById(id).get();
+        return facultyRepository.findById(id).orElseThrow(
+                FacultyNotFoundException::new);
     }
 
     public Faculty updateFacultyInfo(Faculty faculty) {
@@ -43,7 +44,7 @@ public class FacultyService {
         return facultyRepository
                 .findAll()
                 .stream()
-                .filter(faculty -> faculty.getColor() == color)
+                .filter(faculty -> faculty.getColor().equals(color))
                 .collect(Collectors.toList());
     }
 

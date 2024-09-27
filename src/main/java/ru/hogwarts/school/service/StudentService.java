@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @Service
 public class StudentService {
 
-    @Autowired
     private StudentRepository studentRepository;
 
     public StudentService(StudentRepository studentRepository) {
