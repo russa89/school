@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity getStudent(@PathVariable long id) {
+    public ResponseEntity<Student> getStudent(@PathVariable long id) {
         Student student = service.getStudent(id);
         if (student == null) {
             return ResponseEntity.notFound().build();
@@ -38,7 +39,7 @@ public class StudentController {
     }
 
     @PutMapping()
-    public ResponseEntity updateStudentInfo(@PathVariable long id, @RequestBody Student student) {
+    public ResponseEntity updateStudentInfo(@RequestBody Student student) {
         Student foundStudent = service.updateStudentInfo(student);
         if (foundStudent == null) {
             return ResponseEntity.notFound().build();

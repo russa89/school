@@ -37,7 +37,7 @@ public class FacultyController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity updateFacultyInfo(@PathVariable long id, @RequestBody Faculty faculty) {
+    public ResponseEntity<Faculty> updateFacultyInfo(@PathVariable long id, @RequestBody Faculty faculty) {
         Faculty foundFaculty = service.updateFacultyInfo(faculty);
         if (foundFaculty == null) {
             return ResponseEntity.notFound().build();
