@@ -38,8 +38,8 @@ public class AvatarController {
         Avatar avatar = service.findAvatar(id);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
-        headers.setContentLength(avatar.getData().length);
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
+        headers.setContentLength(avatar.getDatas().length);
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getDatas());
     }
 
     @GetMapping(value = "/{id}/avatar-from-file")

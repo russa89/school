@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(path = "/student")
 public class StudentController {
-    @Autowired
     private final StudentService service;
 
     public StudentController(StudentService service) {
@@ -48,14 +47,20 @@ public class StudentController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity deleteStudent(@PathVariable Long id) {
+    public ResponseEntity <Student> deleteStudent(@PathVariable Long id) {
+        if (id < 0){
+            throw new CheckIDException();
+        }
         service.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/age")
-    public Collection<Student> filteredByAge(@RequestParam int age) {
-        return service.getStudentByAge(age);
+    @GetMapping("/age/{age}")
+    public ResponseEntity<Collection<Student>> filteredByAge(@PathVariable int age) {
+        if (age > 0){
+            return ResponseEntity.ok(service.getStudentByAge(age));
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/filter")

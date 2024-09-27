@@ -42,7 +42,7 @@ public class AvatarService {
         avatar.setFilePath(filePath.toString());
         avatar.setFileSize(avatarFile.getSize());
         avatar.setMediaType(avatarFile.getContentType());
-        avatar.setData(avatarFile.getBytes());
+        avatar.setDatas(avatarFile.getBytes());
         avatarRepository.save(avatar);
     }
 

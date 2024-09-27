@@ -50,7 +50,7 @@ public class FacultyService {
 
     public List<Student> findAllStudentsOfFaculty(long id) {
         Faculty faculty = facultyRepository.findById(id).orElseThrow(
-                () -> new FacultyNotFoundException());
+                FacultyNotFoundException::new);
 
         return faculty.getStudents();
     }

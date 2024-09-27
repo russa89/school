@@ -3,6 +3,7 @@ package ru.hogwarts.school.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import ru.hogwarts.school.exceptions.StudentDoesNotExistException;
 import ru.hogwarts.school.exceptions.StudentListIsEmptyException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class StudentService {
 
-    private StudentRepository studentRepository;
+    private final StudentRepository studentRepository;
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -25,7 +26,7 @@ public class StudentService {
     }
 
     public Student getStudent(long id) {
-        return studentRepository.findById(id).get();
+        return studentRepository.findById(id).orElseThrow(StudentDoesNotExistException::new);
     }
 
     public Student updateStudentInfo(Student student) {

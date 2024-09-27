@@ -17,13 +17,13 @@ public class Avatar {
     private String mediaType;
     @Lob
 
-    private byte[] data;
+    private byte[] datas;
     public Avatar(long id, String filePath, long fileSize, String mediaType, byte[] data, Student student) {
         this.id = id;
         this.filePath = filePath;
         this.fileSize = fileSize;
         this.mediaType = mediaType;
-        this.data = data;
+        this.datas = datas;
         this.student = student;
     }
 
@@ -62,12 +62,12 @@ public class Avatar {
         this.mediaType = mediaType;
     }
 
-    public byte[] getData() {
-        return data;
+    public byte[] getDatas() {
+        return datas;
     }
 
-    public void setData(byte[] data) {
-        this.data = data;
+    public void setDatas(byte[] data) {
+        this.datas = datas;
     }
 
     public Student getStudent() {
@@ -83,13 +83,13 @@ public class Avatar {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Avatar avatar = (Avatar) o;
-        return id == avatar.id && fileSize == avatar.fileSize && Objects.equals(filePath, avatar.filePath) && Objects.equals(mediaType, avatar.mediaType) && Arrays.equals(data, avatar.data) && Objects.equals(student, avatar.student);
+        return id == avatar.id && fileSize == avatar.fileSize && Objects.equals(filePath, avatar.filePath) && Objects.equals(mediaType, avatar.mediaType) && Arrays.equals(datas, avatar.datas) && Objects.equals(student, avatar.student);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(id, filePath, fileSize, mediaType, student);
-        result = 31 * result + Arrays.hashCode(data);
+        result = 31 * result + Arrays.hashCode(datas);
         return result;
     }
 
@@ -100,7 +100,7 @@ public class Avatar {
                 ", filePath='" + filePath + '\'' +
                 ", fileSize=" + fileSize +
                 ", mediaType='" + mediaType + '\'' +
-                ", data=" + Arrays.toString(data) +
+                ", data=" + Arrays.toString(datas) +
                 ", student=" + student +
                 '}';
     }
