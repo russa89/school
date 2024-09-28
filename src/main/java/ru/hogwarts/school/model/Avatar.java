@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Avatar {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String filePath;
     private long fileSize;
@@ -18,7 +18,11 @@ public class Avatar {
     @Lob
 
     private byte[] datas;
-    public Avatar(long id, String filePath, long fileSize, String mediaType, byte[] data, Student student) {
+
+    public Avatar() {
+    }
+
+    public Avatar(long id, String filePath, long fileSize, String mediaType, byte[] datas, Student student) {
         this.id = id;
         this.filePath = filePath;
         this.fileSize = fileSize;
@@ -66,7 +70,7 @@ public class Avatar {
         return datas;
     }
 
-    public void setDatas(byte[] data) {
+    public void setDatas(byte[] datas) {
         this.datas = datas;
     }
 
@@ -83,7 +87,8 @@ public class Avatar {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Avatar avatar = (Avatar) o;
-        return id == avatar.id && fileSize == avatar.fileSize && Objects.equals(filePath, avatar.filePath) && Objects.equals(mediaType, avatar.mediaType) && Arrays.equals(datas, avatar.datas) && Objects.equals(student, avatar.student);
+        return id == avatar.id && fileSize == avatar.fileSize && Objects.equals(filePath, avatar.filePath) &&
+                Objects.equals(mediaType, avatar.mediaType) && Arrays.equals(datas, avatar.datas) && Objects.equals(student, avatar.student);
     }
 
     @Override

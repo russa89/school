@@ -13,6 +13,7 @@ import ru.hogwarts.school.repositories.StudentRepository;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -20,13 +21,19 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Transactional
 public class AvatarService {
     private AvatarRepository avatarRepository;
-    private StudentService studentService;
-    @Value("avatars")
+    private StudentService service;
+
+    public AvatarService(AvatarRepository avatarRepository, StudentService service) {
+        this.avatarRepository = avatarRepository;
+        this.service = service;
+    }
+
+    @Value("${path.to.avatars.folder=C:/Users/natas/avatar}")
     private String avatarsDir;
 
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
-        Student student = studentService.getStudent(studentId);
-        Path filePath = Path.of(avatarsDir, student + "." + getExtensions(avatarFile.getOriginalFilename()));
+        Student student = service.getStudent(studentId);
+        Path filePath = Path.of(avatarsDir, student + "." + getExtensions(Objects.requireNonNull(avatarFile.getOriginalFilename())));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
         try (
@@ -47,8 +54,7 @@ public class AvatarService {
     }
 
     public Avatar findAvatar(Long studentId) {
-        return avatarRepository.findByStudentId(studentId).orElseThrow(
-                () -> new AvatarNotFoundException(studentId));
+        return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
     private String getExtensions(String fileName) {
