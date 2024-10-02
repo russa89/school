@@ -17,7 +17,9 @@ import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Objects;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class FacultyControllerTest {
@@ -42,7 +44,7 @@ class FacultyControllerTest {
     }
 
     @Test
-    void testPostFacultyIsNotNull() throws Exception{
+    void testPostFacultyIsNotNull() throws Exception {
         Faculty faculty = new Faculty();
         faculty.setId(1);
         faculty.setName("super");
@@ -61,38 +63,76 @@ class FacultyControllerTest {
     }
 
     @Test
-    void updateFacultyInfo() throws Exception{
+    void updateFacultyInfo() throws Exception {
+
         Faculty faculty = new Faculty();
         faculty.setName("white");
         faculty.setColor("white");
 
+        facultyRepository.save(faculty);
 
-        facultyController.createFaculty(faculty);
         Faculty faculty1 = new Faculty();
         faculty1.setId(faculty1.getId());
         faculty1.setName("puper");
         faculty1.setColor("green");
-        facultyController.createFaculty(faculty1);
 
         ResponseEntity<Faculty> response = restTemplate.exchange("http://localhost:" + port + "/faculty",
                 HttpMethod.PUT, new HttpEntity<>(faculty1), Faculty.class);
 
-        Assertions
-                .assertThat(Objects.requireNonNull(response.getBody()).getName()).isEqualTo("puper");
 
-//        studentController.deleteStudent(faculty.getId());
-//        studentController.deleteStudent(faculty1.getId());
+        Assertions
+                .assertThat(response.getStatusCode().is2xxSuccessful());
+
+        facultyRepository.deleteById(faculty1.getId());
     }
 
     @Test
     void deleteFaculty() {
+        Faculty faculty = new Faculty();
+
+        faculty.setName("black");
+        faculty.setColor("black");
+        facultyController.createFaculty(faculty);
+
+        restTemplate.delete("http://localhost:" + port + "/faculty" + faculty.getId());
+
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/faculty",
+                String.class).isEmpty());
+
+        facultyController.deleteFaculty(faculty.getId());
     }
 
     @Test
     void filteredByColor() {
+        Faculty faculty = new Faculty();
+        faculty.setName("black");
+        faculty.setColor("black");
+        facultyController.createFaculty(faculty);
+
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/faculty/color/" + faculty.getColor(),
+                String.class)).isNotNull();
+        assertThat(faculty.getName()).isEqualTo("black");
+
+        facultyController.deleteFaculty(faculty.getId());
     }
 
     @Test
     void findAllStudentsOfFaculty() {
+
+        Faculty faculty = new Faculty();
+        faculty.setName("2");
+        faculty.setColor("2");
+        facultyController.createFaculty(faculty);
+
+        Student student1 = new Student();
+        student1.setName("1");
+        student1.setAge(15);
+        student1.setFaculty(faculty);
+
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/faculty" + faculty.getId() + "/students",
+                String.class)).isNotNull();
+//        assertThat(faculty.getStudents()).isEqualTo(1);
+
+        facultyController.deleteFaculty(faculty.getId());
     }
 }

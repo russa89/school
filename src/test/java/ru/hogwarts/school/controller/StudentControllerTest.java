@@ -148,7 +148,6 @@ class StudentControllerTest {
         assertThat(student.getName()).isEqualTo("Ivan");
 
         studentController.deleteStudent(student.getId());
-        studentController.deleteStudent(student.getId());
     }
 
     @Test
