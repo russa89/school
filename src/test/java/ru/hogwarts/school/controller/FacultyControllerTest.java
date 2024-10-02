@@ -131,7 +131,6 @@ class FacultyControllerTest {
 
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/faculty" + faculty.getId() + "/students",
                 String.class)).isNotNull();
-//        assertThat(faculty.getStudents()).isEqualTo(1);
 
         facultyController.deleteFaculty(faculty.getId());
     }

@@ -183,8 +183,6 @@ class StudentControllerTest {
                 + port + "/student" + student1.getId() + "/faculty", Faculty.class);
 
         assertThat(actual.getId()).isEqualTo(new Faculty().getId());
-
-
     }
 }
 
