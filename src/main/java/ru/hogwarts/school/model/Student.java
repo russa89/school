@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+
 @Entity
 public class Student {
     @Id
@@ -20,14 +21,18 @@ public class Student {
         return faculty;
     }
 
-//    public Student(long id, String name, int age) {
-//        this.id = id;
-//        this.name = name;
-//        this.age = age;
-//    }
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
 
-    public Student(){
-   }
+    public Student() {
+    }
+
+    public Student(long id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
 
     public long getId() {
         return id;

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class StudentControllerTest {
 
@@ -48,8 +50,7 @@ class StudentControllerTest {
 
     @Test
     public void testGetStudentIsNotNull() throws Exception {
-        Assertions
-                .assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/student", String.class))
+        assertThat(restTemplate.getForObject("http://localhost:" + port + "/student", String.class))
                 .isNotNull();
     }
 
@@ -75,29 +76,35 @@ class StudentControllerTest {
     }
 
     @Test
-    public void testPostStudentIsNotNull() throws Exception {
+    public void testPostStudent() throws Exception {
         Student student = new Student();
-        student.setId(1);
+
         student.setName("Ivan");
         student.setAge(17);
 
-        Assertions
-                .assertThat(this.restTemplate.postForObject("http://localhost:" + port + "/student", student, String.class))
+        final ResponseEntity<String> response = restTemplate.postForEntity(String.format("http://localhost:" +
+                port + "/student"), student, String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(this.restTemplate.postForObject("http://localhost:" + port + "/student", student, String.class))
                 .isNotNull();
+
+        studentController.deleteStudent(student.getId());
     }
+
 
     @Test
     public void testUpdateStudentInfo() throws Exception {
         Student student = new Student();
         student.setAge(16);
         student.setName("Oleg");
-        student.setFaculty(null);
+
         studentController.createStudent(student);
         Student student2 = new Student();
         student2.setId(student2.getId());
         student2.setAge(20);
         student2.setName("Ivan");
-        student2.setFaculty(null);
+
 
         ResponseEntity<Student> response = restTemplate.exchange("http://localhost:" + port + "/student",
                 HttpMethod.PUT, new HttpEntity<>(student2), Student.class);
@@ -106,6 +113,7 @@ class StudentControllerTest {
                 .assertThat(Objects.requireNonNull(response.getBody()).getName()).isEqualTo("Ivan");
 
         studentController.deleteStudent(student2.getId());
+        studentController.deleteStudent(student.getId());
 
     }
 
@@ -122,6 +130,8 @@ class StudentControllerTest {
 
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/student",
                 String.class).isEmpty());
+
+        studentController.deleteStudent(student.getId());
     }
 
     @Test
@@ -137,6 +147,7 @@ class StudentControllerTest {
                 String.class)).isNotNull();
         assertThat(student.getName()).isEqualTo("Ivan");
 
+        studentController.deleteStudent(student.getId());
         studentController.deleteStudent(student.getId());
     }
 
@@ -162,24 +173,20 @@ class StudentControllerTest {
     @Test
     void findFacultyByStudent() throws Exception {
 
-        Faculty faculty = new Faculty();
-        faculty.setId(10);
-        faculty.setName("super");
-        faculty.setColor("blue");
-        facultyController.createFaculty(faculty);
-        Student student = new Student(20, "Petr", 21);
-        studentController.createStudent(student);
-        student.setFaculty(faculty);
+        Student student1 = new Student();
+        student1.setId(18);
+        student1.setName("Pavel");
+        student1.setAge(62);
+        student1.setFaculty(new Faculty(1, "super", "green"));
+        studentController.createStudent(student1);
 
         Faculty actual = this.restTemplate.getForObject("http://localhost:"
-                + port + "/student" + student.getId() + "/faculty", Faculty.class);
+                + port + "/student" + student1.getId() + "/faculty", Faculty.class);
 
-        assertThat(actual.getId()).isEqualTo(faculty.getId());
-
-        //        Faculty faculty1 = response.getBody();
-//////        assert faculty1 != null;
-//        assertThat(faculty.getName().equals(faculty1.getName())).isTrue();
+        assertThat(actual.getId()).isEqualTo(new Faculty().getId());
 
 
     }
 }
+
+

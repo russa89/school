@@ -63,14 +63,16 @@ class FacultyControllerTest {
     @Test
     void updateFacultyInfo() throws Exception{
         Faculty faculty = new Faculty();
-        faculty.setName("super");
-        faculty.setColor("blue");
+        faculty.setName("white");
+        faculty.setColor("white");
+
 
         facultyController.createFaculty(faculty);
         Faculty faculty1 = new Faculty();
         faculty1.setId(faculty1.getId());
         faculty1.setName("puper");
         faculty1.setColor("green");
+        facultyController.createFaculty(faculty1);
 
         ResponseEntity<Faculty> response = restTemplate.exchange("http://localhost:" + port + "/faculty",
                 HttpMethod.PUT, new HttpEntity<>(faculty1), Faculty.class);
@@ -78,8 +80,8 @@ class FacultyControllerTest {
         Assertions
                 .assertThat(Objects.requireNonNull(response.getBody()).getName()).isEqualTo("puper");
 
-        studentController.deleteStudent(faculty.getId());
-        studentController.deleteStudent(faculty1.getId());
+//        studentController.deleteStudent(faculty.getId());
+//        studentController.deleteStudent(faculty1.getId());
     }
 
     @Test
