@@ -37,7 +37,6 @@ class FacultyControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-
     @Test
     void contextLoads() throws Exception {
         Assertions.assertThat(facultyController).isNotNull();
@@ -78,7 +77,6 @@ class FacultyControllerTest {
 
         ResponseEntity<Faculty> response = restTemplate.exchange("http://localhost:" + port + "/faculty",
                 HttpMethod.PUT, new HttpEntity<>(faculty1), Faculty.class);
-
 
         Assertions
                 .assertThat(response.getStatusCode().is2xxSuccessful());

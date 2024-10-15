@@ -114,7 +114,6 @@ class StudentControllerTest {
 
         studentController.deleteStudent(student2.getId());
         studentController.deleteStudent(student.getId());
-
     }
 
     @Test
@@ -183,9 +182,5 @@ class StudentControllerTest {
                 + port + "/student" + student1.getId() + "/faculty", Faculty.class);
 
         assertThat(actual.getId()).isEqualTo(new Faculty().getId());
-
-
     }
 }
-
-

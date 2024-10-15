@@ -41,12 +41,14 @@ public class FacultyService {
     }
 
     public Collection<Faculty> getFacultyByColor(String color) {
-        return facultyRepository
-                .findAll()
-                .stream()
-                .filter(faculty -> faculty.getColor().equals(color))
-                .collect(Collectors.toList());
-    }
+        return facultyRepository.findByColor(color);
+        }
+
+//                .findAll()
+//                .stream()
+//                .filter(faculty -> faculty.getColor().equals(color))
+//                .collect(Collectors.toList());
+
 
     public List<Student> findAllStudentsOfFaculty(long id) {
         Faculty faculty = facultyRepository.findById(id).orElseThrow(

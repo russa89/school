@@ -52,9 +52,9 @@ public class StudentService {
     public Collection<Student> getAllStudents() {
         List<Student> students = new ArrayList<>(studentRepository
                 .findAll());
-        if (students.isEmpty()) {
-            throw new StudentListIsEmptyException();
-        }
+//        if (students.isEmpty()) {
+//            throw new StudentListIsEmptyException();
+//        }
         return students;
     }
 

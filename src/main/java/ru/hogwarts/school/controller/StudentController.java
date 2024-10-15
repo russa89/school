@@ -65,7 +65,7 @@ public class StudentController {
     }
 
     @GetMapping("/filter")
-    public Collection<Student> filteredByAge(@RequestParam int minAge,
+    public Collection<Student> filteredByAgeRange(@RequestParam int minAge,
                                              @RequestParam int maxAge) {
         return service
                 .getAllStudents()
