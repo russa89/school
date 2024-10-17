@@ -47,7 +47,7 @@ class FacultyControllerTest {
         Faculty faculty = new Faculty();
         faculty.setId(1);
         faculty.setName("super");
-        faculty.setColor("blue");
+        faculty.setColor("violet");
 
         Assertions
                 .assertThat(this.restTemplate.postForObject("http://localhost:" + port + "/faculty", faculty, String.class))
@@ -65,7 +65,7 @@ class FacultyControllerTest {
     void updateFacultyInfo() throws Exception {
 
         Faculty faculty = new Faculty();
-        faculty.setName("white");
+        faculty.setName("winter");
         faculty.setColor("white");
 
         facultyRepository.save(faculty);
@@ -73,7 +73,7 @@ class FacultyControllerTest {
         Faculty faculty1 = new Faculty();
         faculty1.setId(faculty1.getId());
         faculty1.setName("puper");
-        faculty1.setColor("green");
+        faculty1.setColor("brown");
 
         ResponseEntity<Faculty> response = restTemplate.exchange("http://localhost:" + port + "/faculty",
                 HttpMethod.PUT, new HttpEntity<>(faculty1), Faculty.class);
@@ -88,7 +88,7 @@ class FacultyControllerTest {
     void deleteFaculty() {
         Faculty faculty = new Faculty();
 
-        faculty.setName("black");
+        faculty.setName("blacky");
         faculty.setColor("black");
         facultyController.createFaculty(faculty);
 
@@ -103,7 +103,7 @@ class FacultyControllerTest {
     @Test
     void filteredByColor() {
         Faculty faculty = new Faculty();
-        faculty.setName("black");
+        faculty.setName("blacky");
         faculty.setColor("black");
         facultyController.createFaculty(faculty);
 
@@ -118,8 +118,8 @@ class FacultyControllerTest {
     void findAllStudentsOfFaculty() {
 
         Faculty faculty = new Faculty();
-        faculty.setName("2");
-        faculty.setColor("2");
+        faculty.setName("two");
+        faculty.setColor("pink");
         facultyController.createFaculty(faculty);
 
         Student student1 = new Student();

@@ -1,5 +1,5 @@
 CREATE TABLE person (
-    Id INTEGER,
+    Id INTEGER PRIMARY KEY,
     User_name text,
     Age Integer,
     Driver_License BOOLEAN,
@@ -7,7 +7,7 @@ CREATE TABLE person (
    );
 
    CREATE TABLE car (
-       Id INTEGER,
+       Id INTEGER PRIMARY KEY,
        Brand text,
        Model text,
        Price numeric,
