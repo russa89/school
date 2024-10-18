@@ -65,4 +65,10 @@ public class FacultyController {
         return ResponseEntity.ok(service.getFaculty(id).getStudents());
     }
 
+    @GetMapping("/name")
+    public Collection<Faculty> filteredByName(@RequestParam String name) {
+        return service.getFacultyByName(name);
+    }
+
+
 }

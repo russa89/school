@@ -64,15 +64,19 @@ public class StudentService {
         return student.getFaculty();
     }
 
-    public Integer getAmountOfStudents(){
+    public Integer getAmountOfStudents() {
         return studentRepository.getAmountOfStudents();
     }
 
-    public Integer getAverageAgeOfStudents(){
+    public Integer getAverageAgeOfStudents() {
         return studentRepository.getAverageAgeOfStudents();
     }
 
-    public List<Student> getLast5Students(){
+    public List<Student> getLast5Students() {
         return studentRepository.getLast5Students();
+    }
+
+    public List<Student> getStudentByName(String name) {
+        return studentRepository.getStudentByName(name);
     }
 }

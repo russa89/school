@@ -42,7 +42,7 @@ public class FacultyService {
 
     public Collection<Faculty> getFacultyByColor(String color) {
         return facultyRepository.findByColor(color);
-        }
+    }
 
 //                .findAll()
 //                .stream()
@@ -56,4 +56,9 @@ public class FacultyService {
 
         return faculty.getStudents();
     }
+
+    public Collection<Faculty> getFacultyByName(String name) {
+        return facultyRepository.findByName(name);
+    }
+
 }
