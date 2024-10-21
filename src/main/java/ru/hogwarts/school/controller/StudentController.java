@@ -48,8 +48,8 @@ public class StudentController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity <Student> deleteStudent(@PathVariable Long id) {
-        if (id < 0){
+    public ResponseEntity<Student> deleteStudent(@PathVariable Long id) {
+        if (id < 0) {
             throw new CheckIDException();
         }
         service.deleteStudent(id);
@@ -58,7 +58,7 @@ public class StudentController {
 
     @GetMapping("/age/{age}")
     public ResponseEntity<Collection<Student>> filteredByAge(@PathVariable int age) {
-        if (age > 0){
+        if (age > 0) {
             return ResponseEntity.ok(service.getStudentByAge(age));
         }
         return ResponseEntity.badRequest().build();
@@ -66,7 +66,7 @@ public class StudentController {
 
     @GetMapping("/filter")
     public Collection<Student> filteredByAgeRange(@RequestParam int minAge,
-                                             @RequestParam int maxAge) {
+                                                  @RequestParam int maxAge) {
         return service
                 .getAllStudents()
                 .stream()
@@ -84,24 +84,36 @@ public class StudentController {
     }
 
     @GetMapping("/amountOfStudents")
-    public Integer getAmountOfStudents(){
-      return service.getAmountOfStudents();
+    public Integer getAmountOfStudents() {
+        return service.getAmountOfStudents();
     }
 
     @GetMapping("/averageAge")
-    public Integer getAverageAgeOfStudents(){
+    public Integer getAverageAgeOfStudents() {
         return service.getAverageAgeOfStudents();
     }
 
     @GetMapping("/last5Students")
-    public List<Student> getLast5Students(){
+    public List<Student> getLast5Students() {
         return service.getLast5Students();
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<List<Student>> getStudentByName(@PathVariable("name") String name){
+    public ResponseEntity<List<Student>> getStudentByName(@PathVariable("name") String name) {
         List<Student> students = service.getStudentByName(name);
         return ResponseEntity.ok(students);
     }
+
+    @GetMapping("/sortedByLetter/{letter}")
+    public ResponseEntity<List<Student>> getStudentsByLetter(@PathVariable("letter") String letter) {
+        List<Student> students = service.getStudentsByLetter(letter);
+        return ResponseEntity.ok(students);
+    }
+
+    @GetMapping("/averageAgeByStream")
+    public Integer getAverageAgeOfStudentsByStream() {
+        return service.getAverageAgeOfStudentsByStream();
+    }
+
 }
 

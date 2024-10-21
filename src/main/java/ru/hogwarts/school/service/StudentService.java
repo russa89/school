@@ -95,4 +95,25 @@ public class StudentService {
         logger.info("Was invoked method for get student by name");
         return studentRepository.getStudentByName(name);
     }
+
+    public List<Student> getStudentsByLetter(String letter) {
+
+        return studentRepository
+                .findAll()
+                .stream()
+                .filter(n -> n.getName()
+                        .toUpperCase()
+                        .startsWith(letter))
+                .sorted(Comparator.comparing(Student::getName))
+                .toList();
+    }
+
+    public Integer getAverageAgeOfStudentsByStream() {
+        return (int) studentRepository
+                .findAll()
+                .stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(Double.NaN);
+    }
 }
