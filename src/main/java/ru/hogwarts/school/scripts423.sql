@@ -5,4 +5,4 @@ LEFT JOIN faculty ON student.faculty_id = faculty.id
 
 SELECT student.name, student.age
 FROM student
-LEFT JOIN avatar ON student.id = avatar.student_id
+INNER JOIN avatar ON student.id = avatar.student_id
