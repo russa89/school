@@ -37,8 +37,9 @@ public class InfoController {
 
         long start2 = System.currentTimeMillis();
         logger.info("start 2nd");
-        int result2 = IntStream
+        int result2 = Stream
                 .iterate(1, a -> a + 1)
+                .parallel()
                 .limit(1_000_000)
                 .reduce(0, Integer::sum);
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exceptions.FacultyNotFoundException;
+import ru.hogwarts.school.exceptions.StudentDoesNotExistException;
 import ru.hogwarts.school.exceptions.StudentListIsEmptyException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -33,10 +34,10 @@ public class FacultyService {
 
     public Faculty getFaculty(long id) {
         logger.info("Was invoked method for get faculty");
-        logger.debug("Requesting info for get faculty with id: {}", id);
-        logger.error("There is not faculty with id = " + id);
-        return facultyRepository.findById(id).orElseThrow(
-                FacultyNotFoundException::new);
+        return facultyRepository.findById(id).orElseGet(() -> {
+            logger.error("There is not faculty with id = " + id);
+            throw new FacultyNotFoundException();
+        });
     }
 
     public Faculty updateFacultyInfo(Faculty faculty) {

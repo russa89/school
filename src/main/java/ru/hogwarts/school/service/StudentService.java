@@ -32,10 +32,13 @@ public class StudentService {
 
     public Student getStudent(long id) {
         logger.info("Was invoked method for get student");
-        logger.debug("Requesting info for get student with id: {}", id);
-        logger.error("There is not student with id = " + id);
-        return studentRepository.findById(id).orElseThrow(StudentDoesNotExistException::new);
+        return studentRepository.findById(id).orElseGet(() -> {
+            logger.error("There is not student with id = " + id);
+            throw new StudentDoesNotExistException();
+        });
+
     }
+
 
     public Student updateStudentInfo(Student student) {
         logger.warn("Was invoked method for update student");
