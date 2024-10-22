@@ -35,7 +35,7 @@ public class AvatarService {
     @Value("${path.to.avatars.folder=C:/Users/natas/avatar}")
     private String avatarsDir;
 
-    Logger logger = LoggerFactory.getLogger(AvatarService.class);
+    private final Logger logger = LoggerFactory.getLogger(AvatarService.class);
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
         logger.info("Was invoked method for upload avatar");
         Student student = service.getStudent(studentId);
