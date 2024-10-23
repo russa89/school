@@ -119,4 +119,44 @@ public class StudentService {
                 .average()
                 .orElse(Double.NaN);
     }
+
+    public void printAllStudentsInParallel() {
+        List<Student> students = studentRepository.findAll();
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+
+        new Thread(() -> {
+            System.out.println(students.get(3).getName());
+            System.out.println(students.get(4).getName());
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(students.get(5).getName());
+            System.out.println(students.get(6).getName());
+        }).start();
+    }
+
+    public void printAllStudentsSynchronized() {
+        List<Student> students = studentRepository.findAll();
+        synchronizedCount(students);
+        synchronizedCount(students);
+
+        new Thread(() -> {
+            synchronizedCount(students);
+            synchronizedCount(students);
+        }).start();
+
+        new Thread(() -> {
+            synchronizedCount(students);
+            synchronizedCount(students);
+        }).start();
+    }
+
+    private Integer count = 1;
+
+    public void synchronizedCount(List<Student> students) {
+        System.out.println(count + " " + students.get(count).getName());
+        count++;
+    }
 }
+

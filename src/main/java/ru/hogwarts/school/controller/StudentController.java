@@ -115,5 +115,15 @@ public class StudentController {
         return service.getAverageAgeOfStudentsByStream();
     }
 
-}
+    @GetMapping("/print-parallel")
+            public ResponseEntity<String> printAllStudentsInParallel(){
+        service.printAllStudentsInParallel();
+        return ResponseEntity.ok("Имена студентов выведены в параллельном режиме");
+    }
 
+    @GetMapping("/print-synchronized")
+    public ResponseEntity<String> printAllStudentsSynchronized(){
+        service.printAllStudentsSynchronized();
+        return ResponseEntity.ok("Имена студентов выведены в синхронном режиме");
+    }
+}
